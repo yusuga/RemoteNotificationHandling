@@ -21,7 +21,30 @@ pod 'RemoteNotificationHandling'
 #### Conform to protocol
 
 ```swift
-struct DeviceTokenHandler: RemoteNotificationDeviceTokenHandling {
+struct DeviceTokenHandler: RemoteNotificationDeviceTokenHandling {    
+}
+```
+
+#### Required call in UIApplicationDelegate
+
+```swift
+extension AppDelegate { // RemoteNotificationDeviceTokenHandling
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        RemoteNotificationManager.shared.deviceTokenHandler.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+    }
+
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        RemoteNotificationManager.shared.deviceTokenHandler.application(application, didFailToRegisterForRemoteNotificationsWithError: error)
+    }
+}
+```
+
+#### Receive handler
+
+##### Callback function
+
+```swift
+struct DeviceTokenHandler: RemoteNotificationDeviceTokenHandling {    
     func didRegisterForRemoteNotifications(result: DeviceTokenResult) {
         switch result {
         case .success(let deviceToken):
@@ -33,21 +56,7 @@ struct DeviceTokenHandler: RemoteNotificationDeviceTokenHandling {
 }
 ```
 
-#### Required AppDelegate handlers
-
-```swift
-extension AppDelegate { // RemoteNotificationDeviceTokenHandling
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        RemoteNotificationManager.shared.deviceTokenHandler.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
-    }
-    
-    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        RemoteNotificationManager.shared.deviceTokenHandler.application(application, didFailToRegisterForRemoteNotificationsWithError: error)
-    }
-}
-```
-
-#### Notification.name
+##### Notification.name
 
 ```swift
 extension Notification.Name {
@@ -75,7 +84,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         print("Payload: \(Payload(notification)")
         completionHandler([.badge, .sound, .alert])
     }
-    
+
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Swift.Void) {
         print("Payload: \(Payload(response)")
         completionHandler()
@@ -88,22 +97,12 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 ### Conform to protocol
 
 ```swift
-class iOS9AndBelowRemoteNotificationHandler: iOS9AndBelowRemoteNotificationHandling {
-    init() {
-        didReceiveRemoteNotificationHandlers.add(self)
-    }
-    
+class iOS9AndBelowRemoteNotificationHandler: iOS9AndBelowRemoteNotificationHandling {    
     let didReceiveRemoteNotificationHandlers = WeakContainer<iOS9AndBelowRemoteNotificationPayloadHandling>()
-}
-
-extension iOS9AndBelowRemoteNotificationHandler: iOS9AndBelowRemoteNotificationPayloadHandling {
-    func didReceiveRemoteNotificationPayload(_ payload: Payload) {
-        print("Payload: \(payload)")
-    }
 }
 ```
 
-#### Required AppDelegate handlers
+#### Required call in UIApplicationDelegate
 
 ```swift
 extension AppDelegate { // iOS9AndBelowRemoteNotificationHandling
@@ -111,11 +110,11 @@ extension AppDelegate { // iOS9AndBelowRemoteNotificationHandling
         RemoteNotificationManager.shared.iOS9AndBelowHandler?.application(application, didFinishLaunchingWithOptions: launchOptions)        
         return true
     }
-    
+
     func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
         RemoteNotificationManager.shared.iOS9AndBelowHandler?.application(application, didRegister: notificationSettings)
     }
-    
+
     /// - note: Opening the app by tapping the icon will never give you information about previous notifications. It's only if you actually open the app via a notification that you will be able to access the notification data. (from [Stackoverflow](https://stackoverflow.com/a/13847840))
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
         RemoteNotificationManager.shared.iOS9AndBelowHandler?.application(application, didReceiveRemoteNotification: userInfo)
@@ -123,7 +122,23 @@ extension AppDelegate { // iOS9AndBelowRemoteNotificationHandling
 }
 ```
 
-#### Notification.name
+#### Receive handler
+
+##### Callback function
+
+```swift
+iOS9AndBelowHandler.didReceiveRemoteNotificationHandlers.add(self)
+```
+
+```swift
+extension ViewController: iOS9AndBelowRemoteNotificationPayloadHandling {
+    func didReceiveRemoteNotificationPayload(_ payload: Payload) {
+        print("Payload: \(payload)")
+    }
+}
+```
+
+##### Notification.name
 
 ```swift
 extension Notification.Name {
@@ -134,27 +149,27 @@ extension Notification.Name {
 }
 ```
 
-## Callback
+## Correspondence table of iOS methods
 
 ### iOS 10
 
 | [App State](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/TheAppLifeCycle/TheAppLifeCycle.html#//apple_ref/doc/uid/TP40007072-CH2-SW3) | Tap | launchOptions | userNotificationCenter(_:willPresent:withCompletionHandler:) | userNotificationCenter(_:didReceive:withCompletionHandler:) |
 | --- | --- | :---: | :---: | :---: |
-| Not running | Icon | ✖️ | ✖️ | ✖️ |
+| Not running | App Icon | ✖️ | ✖️ | ✖️ |
 | Not running | Banner | ⭕️ | ✖️ | ⭕️ |
 | Foreground | - | ✖️ | ⭕️ | ✖️ |
 | Foreground | Banner | ✖️ | ✖️ | ⭕️ |
-| Background | Icon | ✖️ | ✖️ | ✖️ |
+| Background | App Icon | ✖️ | ✖️ | ✖️ |
 | Background | Banner | ✖️ | ✖️ | ⭕️ |
 
 ### iOS 9 and below
 
 | [App State](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/TheAppLifeCycle/TheAppLifeCycle.html#//apple_ref/doc/uid/TP40007072-CH2-SW3) | Tap | launchOptions | application(_:didReceiveRemoteNotification:) |
 | --- | --- | :---: | :---: |
-| Not running | Icon | ✖️ | ✖️ |
+| Not running | App Icon | ✖️ | ✖️ |
 | Not running | Banner | ⭕️ | ✖️ |
 | Foreground | - | ✖️ | ⭕️ |
-| Background | Icon | ✖️ | ✖️ |
+| Background | App Icon | ✖️ | ✖️ |
 | Background | Banner | ✖️ | ⭕️ |
 
 ## Recommended debug libraries
