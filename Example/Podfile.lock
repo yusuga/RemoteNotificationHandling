@@ -1,0 +1,16 @@
+PODS:
+  - RemoteNotificationHandling (0.0.1)
+
+DEPENDENCIES:
+  - RemoteNotificationHandling (from `../`)
+
+EXTERNAL SOURCES:
+  RemoteNotificationHandling:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  RemoteNotificationHandling: f6438752015ae40cd21bd82eb3c0ef8917f77c57
+
+PODFILE CHECKSUM: 4a300f5e043913ddc129c9af7398930b8efec974
+
+COCOAPODS: 1.2.1

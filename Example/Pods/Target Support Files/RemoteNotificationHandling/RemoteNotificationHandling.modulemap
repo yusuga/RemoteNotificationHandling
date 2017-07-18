@@ -1,0 +1,6 @@
+framework module RemoteNotificationHandling {
+  umbrella header "RemoteNotificationHandling-umbrella.h"
+
+  export *
+  module * { export * }
+}
