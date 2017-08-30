@@ -11,7 +11,7 @@ import UserNotifications
 
 /// [Payload Key Reference](https://developer.apple.com/library/content/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/PayloadKeyReference.html)
 public struct Payload {
-    init(userInfo: [AnyHashable : Any]) {
+    public init(userInfo: [AnyHashable : Any]) {
         self.userInfo = userInfo
     }
     
