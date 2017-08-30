@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'RemoteNotificationHandling'
-  s.version          = '0.0.1'
+  s.version          = '0.0.2'
   s.summary          = 'RemoteNotificationHandling does the processing required for remote notification.'
   s.homepage         = 'https://github.com/yusuga/RemoteNotificationHandling'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
