@@ -8,23 +8,21 @@
 
 import Foundation
 
-public struct WeakContainer<T> {
+public struct WeakContainer<T: AnyObject> {
     public init() {}
     
     /// Did not specify T to allow any type to be added.
-    private let weakTable = NSHashTable<AnyObject>.weakObjects()
+    private let weakTable = NSHashTable<T>.weakObjects()
     
     public func add(_ value: T) {
-        weakTable.add(value as AnyObject)
-        print("value: \(value)")
-        print("weakTable: \(weakTable.allObjects)")
+        weakTable.add(value)
     }
     
     public func remove(_ value: T) {
-        weakTable.remove(value as AnyObject)
+        weakTable.remove(value)
     }
     
     var all: [T] {
-        return weakTable.allObjects as! [T]
+        return weakTable.allObjects
     }
 }

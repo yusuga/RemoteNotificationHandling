@@ -10,7 +10,7 @@ import Foundation
 import UserNotifications
 
 /// [Payload Key Reference](https://developer.apple.com/library/content/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/PayloadKeyReference.html)
-public struct Payload {
+public class Payload: NSObject {
     public init(userInfo: [AnyHashable : Any]) {
         self.userInfo = userInfo
     }
@@ -50,19 +50,19 @@ public struct Payload {
 
 @available(iOS 10.0, *)
 public extension Payload {
-    init(_ response: UNNotificationResponse) {
-        self.init(response.notification)
+    convenience init(response: UNNotificationResponse) {
+        self.init(notification: response.notification)
     }
     
-    init(_ notification: UNNotification) {
-        self.init(notification.request)
+    convenience init(notification: UNNotification) {
+        self.init(request: notification.request)
     }
     
-    init(_ request: UNNotificationRequest) {
-        self.init(request.content)
+    convenience init(request: UNNotificationRequest) {
+        self.init(content: request.content)
     }
     
-    init(_ content: UNNotificationContent) {
+    convenience init(content: UNNotificationContent) {
         self.init(userInfo: content.userInfo)
     }
 }
