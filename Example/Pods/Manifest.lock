@@ -1,5 +1,5 @@
 PODS:
-  - RemoteNotificationHandling (0.0.1)
+  - RemoteNotificationHandling (0.0.2)
 
 DEPENDENCIES:
   - RemoteNotificationHandling (from `../`)
@@ -9,8 +9,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  RemoteNotificationHandling: f6438752015ae40cd21bd82eb3c0ef8917f77c57
+  RemoteNotificationHandling: 80bd2a0422f34dfecebf96074bfe67679198c855
 
 PODFILE CHECKSUM: 4a300f5e043913ddc129c9af7398930b8efec974
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.5.0

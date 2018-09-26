@@ -80,11 +80,11 @@ class ViewController: UIViewController {
     
     // MARK: Notification
     
-    func didRegisterForRemoteNotifications(notification: Notification) {
+    @objc func didRegisterForRemoteNotifications(notification: Notification) {
         deviceTokenLabel.text = (notification.object as! DeviceToken).string
     }
     
-    func didReceiveRemoteNotification(_ notification: Notification) {
+    @objc func didReceiveRemoteNotification(_ notification: Notification) {
         let payload = notification.object as! Payload
         print("\(type(of: self))\(count) \(#function) payload.userInfo: \(payload.userInfo)")
     }

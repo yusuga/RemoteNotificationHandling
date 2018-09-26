@@ -13,7 +13,7 @@ import RemoteNotificationHandling
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
-    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         _ = RemoteNotificationManager.shared // setup
         return true
     }
@@ -38,7 +38,7 @@ extension AppDelegate { // RemoteNotificationDeviceTokenHandling
 }
 
 extension AppDelegate { // iOS9AndBelowRemoteNotificationHandling
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         NSLog("\(type(of: self)) \(#function) launchOptions: \(String(describing: launchOptions))")
         clearApplicationIconBadge()
         RemoteNotificationManager.shared.iOS9AndBelowHandler?.application(application, didFinishLaunchingWithOptions: launchOptions)

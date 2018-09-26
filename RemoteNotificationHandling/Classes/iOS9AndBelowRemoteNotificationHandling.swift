@@ -16,7 +16,7 @@ public protocol iOS9AndBelowRemoteNotificationHandling: AnyObject {
 public extension iOS9AndBelowRemoteNotificationHandling {
     // MARK: UIApplicationDelegate handler
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         if let userInfo = launchOptions?[.remoteNotification] as? [AnyHashable : Any] {
             self.application(application, didReceiveRemoteNotification: userInfo)
         }
